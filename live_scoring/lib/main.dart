@@ -47,6 +47,8 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counterA = 0;
   int _counterB = 0;
 
+  int _foulA = 0;
+  int _foulB = 0;
   void _incrementCounterA() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -58,15 +60,17 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _incrementByTwoCounterA() {
+  void _incrementFoulA(){
     setState(() {
-      _counterA += 2;
-    });
-  }
-
-  void _incrementByThreeCounterA() {
-    setState(() {
-      _counterA += 3;
+      if(_foulA==1){
+        _foulA=0;
+        if(_counterA > 0){
+         _counterA--;
+       }
+      }
+      else{
+        _foulA++;
+      }
     });
   }
 
@@ -81,22 +85,25 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _incrementByTwoCounterB() {
+  void _incrementFoulB(){
     setState(() {
-      _counterB += 2;
+     if(_foulB==1){
+       _foulB=0;
+       if(_counterB > 0){
+         _counterB--;
+       }
+     } 
+     else{
+       _foulB++;
+     }
     });
   }
-
-  void _incrementByThreeCounterB() {
-    setState(() {
-      _counterB += 3;
-    });
-  }
-
   void _resetScore() {
     setState(() {
       _counterA = 0;
       _counterB = 0;
+      _foulA =0;
+      _foulB=0;
     });
   }
 
@@ -140,28 +147,18 @@ class _MyHomePageState extends State<MyHomePage> {
         new Container(
           padding: const EdgeInsets.all(8.0),
           child: new RaisedButton(
-            child: new Text('+3'),
-            onPressed: (label == 'Team A')
-                ? _incrementByThreeCounterA
-                : _incrementByThreeCounterB,
-          ),
-        ),
-        new Container(
-          padding: const EdgeInsets.all(8.0),
-          child: new RaisedButton(
-            child: new Text('+2'),
-            onPressed: (label == 'Team A')
-                ? _incrementByTwoCounterA
-                : _incrementByTwoCounterB,
-          ),
-        ),
-        new Container(
-          padding: const EdgeInsets.all(8.0),
-          child: new RaisedButton(
-            child: new Text('free throw'),
+            child: new Text('Add Point'),
             onPressed:
                 (label == 'Team A') ? _incrementCounterA : _incrementCounterB,
-          ),
+          ), 
+        ),
+        new Container(
+          padding: const EdgeInsets.all(8.0),
+          child: new RaisedButton(
+              child: new Text('Foul'),
+              onPressed: 
+                (label== 'Team A') ? _incrementFoulA : _incrementFoulB,
+          )
         ),
       ],
     );
