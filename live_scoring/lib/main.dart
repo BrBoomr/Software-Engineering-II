@@ -2,22 +2,24 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
-class FirstRoute extends StatelessWidget {
-  FirstRoute({Key key, this.title}) : super(key: key);
+class TeamNames extends StatelessWidget {
+  TeamNames({Key key, this.title}) : super(key: key);
   final String title;
+  var teamOneController = TextEditingController();
+  var teamTwoController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('First Route'),
+        title: Text('Input Names'),
       ),
       body: Center(
         child: RaisedButton(
-          child: Text('Open route'),
+          child: Text('Start Game!'),
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => MyHomePage()),
+              MaterialPageRoute(builder: (context) => MyHomePage(teamOneController.text, teamTwoController.text)),
             );
           },
         ),
@@ -33,29 +35,21 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'TKD Scorer',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: FirstRoute(title: 'TKD Scorer'),
+      home: TeamNames(title: 'TKD Scorer'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   //MyHomePage({Key key, this.title}) : super(key: key);
-
+  MyHomePage(this.teamOneName, this.teamTwoName);
   //final String title;
+  final String teamOneName, teamTwoName;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState(teamOneName, teamTwoName);
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -64,6 +58,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   int _foulA = 0;
   int _foulB = 0;
+  final String teamOneName, teamTwoName;
+  _MyHomePageState(this.teamOneName, this.teamTwoName);
+
   void _incrementCounterA() {
     setState(() {
       _counterA++;
@@ -132,7 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
         new Container(
           padding: const EdgeInsets.all(8.0),
           child: new Text(
-            (label == 'Team A') ? '$_counterA' : '$_counterB',
+            (label == teamOneName) ? '$_counterA' : '$_counterB',
             style: new TextStyle(fontSize: 32.0, color: Colors.black38),
           ),
         ),
@@ -141,7 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: new RaisedButton(
             child: new Text('Add Point'),
             onPressed:
-                (label == 'Team A') ? _incrementCounterA : _incrementCounterB,
+                (label == teamOneName) ? _incrementCounterA : _incrementCounterB,
           ), 
         ),
         new Container(
@@ -149,7 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: new RaisedButton(
               child: new Text('Foul'),
               onPressed: 
-                (label== 'Team A') ? _incrementFoulA : _incrementFoulB,
+                (label== teamOneName) ? _incrementFoulA : _incrementFoulB,
           )
         ),
       ],
