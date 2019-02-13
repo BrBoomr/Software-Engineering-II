@@ -180,6 +180,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: new Text(widget.title),
       ),
       body: new Container(
+        padding: const EdgeInsets.all(15.0),
         child: new Column(
           children: <Widget>[
             new Row(
