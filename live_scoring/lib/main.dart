@@ -13,17 +13,37 @@ class TeamNames extends StatelessWidget {
       appBar: AppBar(
         title: Text('Input Names'),
       ),
-      body: Center(
-        child: RaisedButton(
-          child: Text('Start Game!'),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MyHomePage(teamOneController.text, teamTwoController.text)),
-            );
-          },
-        ),
-      ),
+      body: Container(
+        padding: EdgeInsets.all(40.0),
+        child: Column(
+        children: <Widget>[
+          TextField(
+            controller: teamOneController,
+            decoration: InputDecoration(
+              labelText: "Player/Team One Name",
+              border: OutlineInputBorder(),
+            ),
+          ),
+          TextField(
+            controller: teamTwoController,
+            decoration: InputDecoration(
+              labelText: "Player/Team Two Name",
+              border: OutlineInputBorder()
+            ),
+          ),
+          RaisedButton(
+            child: Text('Start Game!'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => MyHomePage(
+                        teamOneController.text, teamTwoController.text)),
+              );
+            },
+          ),
+        ],
+      )),
     );
   }
 }
@@ -35,7 +55,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'TKD Scorer',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.red,
       ),
       home: TeamNames(title: 'TKD Scorer'),
     );
@@ -67,15 +87,14 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _incrementFoulA(){
+  void _incrementFoulA() {
     setState(() {
-      if(_foulA==1){
-        _foulA=0;
-        if(_counterA > 0){
-         _counterA--;
-       }
-      }
-      else{
+      if (_foulA == 1) {
+        _foulA = 0;
+        if (_counterA > 0) {
+          _counterA--;
+        }
+      } else {
         _foulA++;
       }
     });
@@ -87,25 +106,25 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _incrementFoulB(){
+  void _incrementFoulB() {
     setState(() {
-     if(_foulB==1){
-       _foulB=0;
-       if(_counterB > 0){
-         _counterB--;
-       }
-     } 
-     else{
-       _foulB++;
-     }
+      if (_foulB == 1) {
+        _foulB = 0;
+        if (_counterB > 0) {
+          _counterB--;
+        }
+      } else {
+        _foulB++;
+      }
     });
   }
+
   void _resetScore() {
     setState(() {
       _counterA = 0;
       _counterB = 0;
-      _foulA =0;
-      _foulB=0;
+      _foulA = 0;
+      _foulB = 0;
     });
   }
 
@@ -137,18 +156,18 @@ class _MyHomePageState extends State<MyHomePage> {
           padding: const EdgeInsets.all(8.0),
           child: new RaisedButton(
             child: new Text('Add Point'),
-            onPressed:
-                (label == teamOneName) ? _incrementCounterA : _incrementCounterB,
-          ), 
+            onPressed: (label == teamOneName)
+                ? _incrementCounterA
+                : _incrementCounterB,
+          ),
         ),
         new Container(
-          padding: const EdgeInsets.all(8.0),
-          child: new RaisedButton(
+            padding: const EdgeInsets.all(8.0),
+            child: new RaisedButton(
               child: new Text('Foul'),
-              onPressed: 
-                (label== teamOneName) ? _incrementFoulA : _incrementFoulB,
-          )
-        ),
+              onPressed:
+                  (label == teamOneName) ? _incrementFoulA : _incrementFoulB,
+            )),
       ],
     );
   }
@@ -164,10 +183,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return new Scaffold(
       appBar: new AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        //title: new Text(widget.title),
-      ),
+          // Here we take the value from the MyHomePage object that was created by
+          // the App.build method, and use it to set our appbar title.
+          //title: new Text(widget.title),
+          ),
       body: new Container(
         padding: const EdgeInsets.all(15.0),
         child: new Column(
@@ -175,14 +194,14 @@ class _MyHomePageState extends State<MyHomePage> {
             new Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                scoreButtonColumn('Team A'),
+                scoreButtonColumn(teamOneName),
                 new Container(
                   margin: const EdgeInsets.only(left: 16.0, right: 16.0),
                   child: new CustomPaint(
                     painter: new Sky(),
                   ),
                 ),
-                scoreButtonColumn('Team B'),
+                scoreButtonColumn(teamTwoName),
               ],
             ),
             new Container(
