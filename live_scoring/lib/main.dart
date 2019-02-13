@@ -2,12 +2,36 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
+class FirstRoute extends StatelessWidget {
+  FirstRoute({Key key, this.title}) : super(key: key);
+  final String title;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('First Route'),
+      ),
+      body: Center(
+        child: RaisedButton(
+          child: Text('Open route'),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MyHomePage()),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'TKD Scorer',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -20,24 +44,15 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: FirstRoute(title: 'TKD Scorer'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  //MyHomePage({Key key, this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+  //final String title;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -51,11 +66,6 @@ class _MyHomePageState extends State<MyHomePage> {
   int _foulB = 0;
   void _incrementCounterA() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
       _counterA++;
     });
   }
@@ -76,11 +86,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _incrementCounterB() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
       _counterB++;
     });
   }
@@ -111,19 +116,6 @@ class _MyHomePageState extends State<MyHomePage> {
     String label,
   ) {
     return new Column(
-      // Column is also layout widget. It takes a list of children and
-      // arranges them vertically. By default, it sizes itself to fit    its
-      // children horizontally, and tries to be as tall as its parent.
-      //
-      // Invoke "debug paint" (press "p" in the console where you ran
-      // "flutter run", or select "Toggle Debug Paint" from the Flutter tool
-      // window in IntelliJ) to see the wireframe for each widget.
-      //
-      // Column has various properties to control how it sizes itself and
-      // how it positions its children. Here we use mainAxisAlignment to
-      // center the children vertically; the main axis here is the vertical
-      // axis because Columns are vertical (the cross axis would be
-      // horizontal).
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -177,7 +169,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: new AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: new Text(widget.title),
+        //title: new Text(widget.title),
       ),
       body: new Container(
         padding: const EdgeInsets.all(15.0),
