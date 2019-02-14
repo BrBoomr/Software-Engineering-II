@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
-class TeamNames extends StatelessWidget {
+class  TeamNames extends StatelessWidget {
   TeamNames({Key key, this.title}) : super(key: key);
   final String title;
   var teamOneController = TextEditingController();
@@ -32,6 +32,7 @@ class TeamNames extends StatelessWidget {
             ),
           ),
           RaisedButton(
+            color: Colors.green,
             child: Text('Start Game!'),
             onPressed: () {
               Navigator.push(
@@ -54,9 +55,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'TKD Scorer',
-      theme: ThemeData(
-        primarySwatch: Colors.red,
-      ),
+      theme: ThemeData.dark(),
       home: TeamNames(title: 'TKD Scorer'),
     );
   }
@@ -79,6 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _foulA = 0;
   int _foulB = 0;
   final String teamOneName, teamTwoName;
+  
   _MyHomePageState(this.teamOneName, this.teamTwoName);
 
   void _incrementCounterA() {
@@ -148,25 +148,23 @@ class _MyHomePageState extends State<MyHomePage> {
         new Container(
           padding: const EdgeInsets.all(8.0),
           child: new Text(
-            (label == teamOneName) ? '$_counterA' : '$_counterB',
-            style: new TextStyle(fontSize: 32.0, color: Colors.black38),
+            (label == teamOneName) ? '$_counterA' : '$_counterB', //return string with color?
+            style: new TextStyle(fontSize: 32.0, color: Colors.white),
           ),
         ),
         new Container(
           padding: const EdgeInsets.all(8.0),
           child: new RaisedButton(
             child: new Text('Add Point'),
-            onPressed: (label == teamOneName)
-                ? _incrementCounterA
-                : _incrementCounterB,
+            onPressed: (label == teamOneName) ? _incrementCounterA : _incrementCounterB,
           ),
         ),
         new Container(
             padding: const EdgeInsets.all(8.0),
             child: new RaisedButton(
+              color: Colors.red,
               child: new Text('Foul'),
-              onPressed:
-                  (label == teamOneName) ? _incrementFoulA : _incrementFoulB,
+              onPressed: (label == teamOneName) ? _incrementFoulA : _incrementFoulB,
             )),
       ],
     );
@@ -207,6 +205,8 @@ class _MyHomePageState extends State<MyHomePage> {
             new Container(
               margin: const EdgeInsets.only(top: 72.0),
               child: new RaisedButton(
+                color: Colors.yellow,
+                textColor: Colors.black,
                 onPressed: _resetScore,
                 child: new Text('Reset'),
               ),
