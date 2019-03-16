@@ -29,18 +29,15 @@ class SecondScreen extends StatelessWidget {
   List<dynamic> posts, myPosts;
   var token;
   SecondScreen(this.posts, this.myPosts, this.token);
-  var email = "";
 
   Future<String> getEmail(var id) async {
     String userJson = "$url/api/v1/users/$id";
     var response = await http.get(userJson,
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
-    email = jsonDecode(response.body)["email"];
-    //return userEmail;
+    return jsonDecode(response.body)["email"];
   }
-  /*
-  Future<ExpansionTile> createPost(post) async {
-    var email = await getEmail(23);
+  Future<ExpansionTile> createPost(var post, var id) async{
+    var email = await getEmail(id);
     return ExpansionTile(
       title: Text(post['caption']),
       children: <Widget>[
@@ -49,7 +46,6 @@ class SecondScreen extends StatelessWidget {
       ],
     );
   }
-  */
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -76,32 +72,25 @@ class SecondScreen extends StatelessWidget {
                 itemCount: posts.length,
                 itemBuilder: (BuildContext context, int index) {
                   return new FutureBuilder(
-                    future: getEmail(23),
+                    future: createPost(posts[index],posts[index]['user_id']),
                     builder: (context, snapshot) {
                       return snapshot.connectionState == ConnectionState.done
-                          ? ExpansionTile(
-                              title: Text(posts[index]['caption']),
-                              children: <Widget>[
-                                Text("Created by: $email"),
-                                Text(posts[index]['image_url']),
-                              ],
-                            )
-                          : Text("invalid");
+                          ? snapshot.data
+                          : Text("Loading");
                     },
                   );
-                  //dynamic userEmail = () async => await getEmail(23);
-                  //CREATE FUNCTION THAT CREATES EXPANSION TILE, THEN RETURNS IT.
-                  /*
-                  return ExpansionTile(
-                    title: Text(posts[index]['caption']),
-                    children: <Widget>[
-                      Text("Created by: "),
-                      Text(posts[index]['image_url']),
-                    ],
-                  );
-                  */
                 },
               ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  FlatButton(
+                      padding: EdgeInsets.all(30.0),
+                      child: Text("New Post"),
+                      onPressed: ()=>{},
+                  ),
+              ],),
+              
               ListView.builder(
                 itemCount: myPosts.length,
                 itemBuilder: (BuildContext context, int index) {
