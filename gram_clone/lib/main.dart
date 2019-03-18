@@ -29,21 +29,36 @@ class SecondScreen extends StatelessWidget {
   List<dynamic> posts, myPosts;
   var token;
   SecondScreen(this.posts, this.myPosts, this.token);
-
-  Future<String> getEmail(var id) async {
-    String userJson = "$url/api/v1/users/$id";
-    var response = await http.get(userJson,
-        headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
-    return jsonDecode(response.body)["email"];
+  void addLike(var postId){
+    http.post("$url/posts/$postId/likes");
   }
-  Future<ExpansionTile> createPost(var post, var id) async{
-    var email = await getEmail(id);
+  Future<ExpansionTile> createPost(var post) async{
+    var likesCount = post['likes_count'];
+    var commentsCount = post['comments_count'];
     return ExpansionTile(
       title: Text(post['caption']),
       children: <Widget>[
-        Text("Created by: $email"),
+        Text("Created by: " + post['user_email']),
         Text(post['image_url']),
-      ],
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+          RaisedButton(
+          child: Text("Like: $likesCount"),
+          onPressed: ()=>{
+            addLike(post['id']),
+            
+          },),
+          RaisedButton(
+            child: Text("Comments: $commentsCount"),
+            onPressed: ()=>{
+
+            },)
+        ],)
+        
+        //Text("Likes: $likesCount | Comments: $commentsCount"),
+        ],
+
     );
   }
   @override
@@ -72,7 +87,7 @@ class SecondScreen extends StatelessWidget {
                 itemCount: posts.length,
                 itemBuilder: (BuildContext context, int index) {
                   return new FutureBuilder(
-                    future: createPost(posts[index],posts[index]['user_id']),
+                    future: createPost(posts[index]),
                     builder: (context, snapshot) {
                       return snapshot.connectionState == ConnectionState.done
                           ? snapshot.data
