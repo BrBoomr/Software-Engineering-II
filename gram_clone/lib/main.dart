@@ -24,15 +24,37 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+class NewPost extends StatefulWidget {
+  final post;
+  final token;
+  NewPost(this.post, this.token);
+  @override
+  _NewPostState createState() => _NewPostState(post,token);
+}
 
-class SecondScreen extends StatelessWidget {
-  List<dynamic> posts, myPosts;
-  var token;
-  SecondScreen(this.posts, this.myPosts, this.token);
-  void addLike(var postId){
-    http.post("$url/posts/$postId/likes");
+class _NewPostState extends State<NewPost> {
+  final post;
+  final token;
+  _NewPostState(this.post, this.token);
+
+  void addLike(var postId) async {
+    http.post("$url/api/v1/posts/$postId/likes",
+    headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
+    setState(() {
+      post['liked']=true;
+      post['likes_count']++;
+    });
   }
-  Future<ExpansionTile> createPost(var post) async{
+  void removeLike(var postId) async {
+    http.delete("$url/api/v1/posts/$postId/likes",
+    headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
+    setState(() {
+      post['liked']=false;
+      post['likes_count']--;
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
     var likesCount = post['likes_count'];
     var commentsCount = post['comments_count'];
     return ExpansionTile(
@@ -43,24 +65,37 @@ class SecondScreen extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-          RaisedButton(
-          child: Text("Like: $likesCount"),
-          onPressed: ()=>{
-            addLike(post['id']),
-            
-          },),
-          RaisedButton(
-            child: Text("Comments: $commentsCount"),
-            onPressed: ()=>{
-
-            },)
-        ],)
-        
-        //Text("Likes: $likesCount | Comments: $commentsCount"),
-        ],
-
+            FlatButton(
+              color: post['liked'] ? Colors.blue : Colors.transparent,
+              child: Text("Like: $likesCount"),
+              onPressed: () => {
+                post['liked'] ? removeLike(post['id']) : addLike(post['id']),
+              },
+            ),
+            FlatButton(
+              child: Text("Comments: $commentsCount"),
+              onPressed: () => {},
+            )
+          ],
+        )
+      ],
     );
   }
+}
+
+class PostPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      
+    );
+  }
+}
+
+class SecondScreen extends StatelessWidget {
+  List<dynamic> posts, myPosts;
+  var token;
+  SecondScreen(this.posts, this.myPosts, this.token);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -86,33 +121,23 @@ class SecondScreen extends StatelessWidget {
               ListView.builder(
                 itemCount: posts.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return new FutureBuilder(
-                    future: createPost(posts[index]),
-                    builder: (context, snapshot) {
-                      return snapshot.connectionState == ConnectionState.done
-                          ? snapshot.data
-                          : Text("Loading");
-                    },
-                  );
+                  return NewPost(posts[index],token);
                 },
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
                   FlatButton(
-                      padding: EdgeInsets.all(30.0),
-                      child: Text("New Post"),
-                      onPressed: ()=>{},
+                    padding: EdgeInsets.all(30.0),
+                    child: Text("New Post"),
+                    onPressed: () => {},
                   ),
-              ],),
-              
+                ],
+              ),
               ListView.builder(
                 itemCount: myPosts.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return ExpansionTile(
-                    title: Text(myPosts[index]['caption']),
-                    children: <Widget>[Text(myPosts[index]['image_url'])],
-                  );
+                  return NewPost(myPosts[index],token);
                 },
               )
             ],
