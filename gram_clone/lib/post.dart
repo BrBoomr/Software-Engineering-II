@@ -19,19 +19,18 @@ class _PostState extends State<Post> {
   final token;
   _PostState(this.post, this.token);
 
-  Future<dynamic>getUserDetails(var userId) async{
+  Future<dynamic> getUserDetails(var userId) async {
     var details = await http.get("$url/api/v1/users/$userId",
-    headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
+        headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
     return jsonDecode(details.body);
   }
 
-  void goToUserPage(context, var userId) async{
+  void goToUserPage(context, var userId) async {
     var userDetails = await getUserDetails(userId);
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => UserPage(token,userDetails)));
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => UserPage(token, userDetails)));
   }
+
   Widget imageContainer() {
     var likesCount = post['likes_count'];
     return new Container(
@@ -47,25 +46,25 @@ class _PostState extends State<Post> {
         child: new Stack(
           children: <Widget>[
             Align(
-              alignment: Alignment.topLeft,
-              child: Material(
-                elevation: 4.0,
-                shape: CircleBorder(),
-                color: Colors.transparent,
-                child: Ink.image(
-                  image: NetworkImage(post['user_profile_image_url']),
-                  fit: BoxFit.cover,
-                  width: 50.0,
-                  height: 50.0,
-                  child: InkWell(
-                    onTap: () {
-                      goToUserPage(context, post['user_id']);
-                    },
-                    child: null,
+                alignment: Alignment.topLeft,
+                child: InkWell(
+                  onTap: (){
+                    goToUserPage(context, post['user_id']);
+                  },
+                  child: Container(
+                    width: 60.0,
+                    height: 60.0,
+                    decoration: BoxDecoration(
+                        color: Colors.red,
+                        image: DecorationImage(
+                            image: NetworkImage(post['user_profile_image_url']),
+                            fit: BoxFit.cover),
+                        borderRadius: BorderRadius.all(Radius.circular(75.0)),
+                        boxShadow: [
+                          BoxShadow(blurRadius: 7.0, color: Colors.black)
+                        ]),
                   ),
-                ),
-              ),
-            ),
+                )),
             Align(
                 alignment: Alignment.bottomRight,
                 child: FlatButton.icon(
