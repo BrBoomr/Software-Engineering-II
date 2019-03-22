@@ -9,46 +9,32 @@ class Tabs extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Login Authenticator',
+      title: 'Gram Clone',
       theme: ThemeData(
         brightness: Brightness.dark,
         accentColor: Colors.red,
       ),
       home: DefaultTabController(
-        length: 3,
+        length: 2,
         child: Scaffold(
           appBar: AppBar(
             bottom: TabBar(
               tabs: [
-                Tab(icon: Icon(Icons.directions_car)),
-                Tab(icon: Icon(Icons.directions_transit)),
+                Tab(icon: Icon(Icons.rss_feed)),
+                Tab(icon: Icon(Icons.publish)),
               ],
             ),
+            title: Text("Gram Clone"),
+            centerTitle: true,
           ),
           body: TabBarView(
             children: [
               ListView.builder(
                 itemCount: posts.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return NewPost(posts[index],token);
+                  return Post(posts[index],token);
                 },
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  FlatButton(
-                    padding: EdgeInsets.all(30.0),
-                    child: Text("New Post"),
-                    onPressed: () => {},
-                  ),
-                ],
-              ),
-              ListView.builder(
-                itemCount: myPosts.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return NewPost(myPosts[index],token);
-                },
-              )
             ],
           ),
         ),
