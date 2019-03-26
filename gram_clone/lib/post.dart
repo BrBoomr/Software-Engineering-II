@@ -35,7 +35,8 @@ class _PostState extends State<Post> {
     var likesCount = post['likes_count'];
     return new Container(
         constraints: new BoxConstraints.expand(
-          height: 200.0,
+          height: 400.0,
+          
         ),
         decoration: new BoxDecoration(
           image: new DecorationImage(

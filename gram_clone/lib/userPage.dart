@@ -4,11 +4,17 @@ class UserPage extends StatelessWidget {
   final token;
   final userDetails;
   UserPage(this.token, this.userDetails);
-  @override
-  Widget build(BuildContext context) {
+
+  String getName(){
+    String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
     var userName = userDetails['email'].toString();
     userName = userName.replaceFirst('.', ' ').replaceRange(userName.indexOf('0'), userName.lastIndexOf('u')+1, "");
-    
+    List<String> name = userName.split(' ');
+    return capitalize(name[0]) +  " " + capitalize(name[1]);
+  }
+  @override
+  Widget build(BuildContext context) {
+    var userName = getName();
     return new Scaffold(
       appBar: AppBar(
         title: Text(userName + " Page")
