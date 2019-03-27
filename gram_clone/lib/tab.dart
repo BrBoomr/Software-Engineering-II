@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'post.dart';
 
 class Tabs extends StatelessWidget {
-  List<dynamic> posts, myPosts;
-  var token;
+  final List<dynamic> posts, myPosts;
+  final token;
   Tabs(this.posts, this.myPosts, this.token);
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class Tabs extends StatelessWidget {
           body: TabBarView(
             children: [
               ListView.builder(
-                itemCount: posts.length,
+                itemCount: posts.length-1,
                 itemBuilder: (BuildContext context, int index) {
                   return Post(posts[index],token);
                 },

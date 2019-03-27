@@ -9,8 +9,8 @@ import 'tab.dart';
 
 
 class LoginPage extends StatelessWidget {
-  var usernameController = TextEditingController();
-  var passwordController = TextEditingController();
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
 
   void stuff(context) async {
     var token = await login();
