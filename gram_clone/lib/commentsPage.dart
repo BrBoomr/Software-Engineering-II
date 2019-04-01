@@ -37,6 +37,17 @@ class Comment extends StatelessWidget {
   final comment;
   final token;
   Comment(this.comment, this.token);
+
+  String getName() {
+    String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
+    var userName = comment['user']['email'].toString();
+    print(userName);
+    userName = userName
+        .replaceFirst('.', ' ')
+        .replaceRange(userName.indexOf('@'), userName.lastIndexOf('u') + 1, "");
+    List<String> name = userName.split(' ');
+    return capitalize(name[0]) + " " + capitalize(name[1]);
+  }
   @override
   Widget build(BuildContext context) {
     var creation = DateTime.now().difference(DateTime.parse(comment['created_at']).toLocal());
@@ -46,9 +57,10 @@ class Comment extends StatelessWidget {
       child: Column(
         children: <Widget>[
           ListTile(
+            leading: CircleAvatar(backgroundImage: NetworkImage(comment['user']['profile_image_url']),),
             title: Text(comment['text']),
-            trailing: Text(comment['user_id'].toString()),
-            subtitle: Text("Created: $creation hours ago")),
+            trailing: Text("$creation"),
+            subtitle: Text(getName())),
         ],
       )
     );

@@ -8,7 +8,7 @@ class UserPage extends StatelessWidget {
   String getName(){
     String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
     var userName = userDetails['email'].toString();
-    userName = userName.replaceFirst('.', ' ').replaceRange(userName.indexOf('0'), userName.lastIndexOf('u')+1, "");
+    userName = userName.replaceFirst('.', ' ').replaceRange(userName.indexOf('@'), userName.lastIndexOf('u')+1, "");
     List<String> name = userName.split(' ');
     return capitalize(name[0]) +  " " + capitalize(name[1]);
   }

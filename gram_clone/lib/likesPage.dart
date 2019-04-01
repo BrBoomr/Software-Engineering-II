@@ -47,6 +47,7 @@ class Like extends StatelessWidget {
       child: Column(
         children: <Widget>[
           ListTile(
+            //leading: Image.network(like['']),
             title: Text(like['user_id'].toString()),
             subtitle: Text("Liked: $creation hours ago")),
         ],
