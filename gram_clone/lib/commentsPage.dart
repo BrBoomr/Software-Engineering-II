@@ -1,37 +1,69 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'main.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'dart:async';
+import 'userPage.dart';
 
 class CommentPage extends StatefulWidget {
   final token;
   final List<dynamic> commentList;
+  final postId;
 
-  CommentPage(this.token, this.commentList);
+  CommentPage(this.token, this.commentList, this.postId);
   @override
-  _CommentPageState createState() => _CommentPageState(token, commentList);
+  _CommentPageState createState() => _CommentPageState(token, commentList, postId);
 }
 
 class _CommentPageState extends State<CommentPage> {
   final token;
-  final List<dynamic> commentList;
+  List<dynamic> commentList;
+  final postId;
+  var commentController = TextEditingController();
+_CommentPageState(this.token, this.commentList, this.postId);
 
-  _CommentPageState(this.token, this.commentList);
+  void postComment(String comment) async{
+    http.post("$url/api/v1/posts/$postId/comments?text=$comment",
+        headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
+    var list =  await http.get("$url/api/v1/posts/$postId/comments",
+        headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
+    commentList = jsonDecode(list.body);
+    setState((){
+      
+    });
+  }
+  
   @override
   Widget build(BuildContext context) {
-    //print(commentList);
     return new Scaffold(
         appBar: AppBar(
           title: Text("Comment Page"),
           centerTitle: true,
         ),
-        body: ListView.builder(
+        body: Container(
+          child: Column(children: <Widget>[
+            TextField(
+              controller: commentController,
+              decoration: InputDecoration(
+                  hintText: "Leave a comment...",
+                  contentPadding: const EdgeInsets.all(20)),
+              onSubmitted: (comment)=>{
+                postComment(comment)
+              },
+              ),
+              
+            Expanded(
+              child: ListView.builder(
               itemCount: commentList.length,
               itemBuilder: (BuildContext context, int index) {
-                return Comment(commentList[index],token);
+                return Comment(commentList[index], token);
               },
-            ),
-        );
+            ))
+          ]),
+        ));
   }
 }
-
 
 class Comment extends StatelessWidget {
   final comment;
@@ -48,21 +80,38 @@ class Comment extends StatelessWidget {
     List<String> name = userName.split(' ');
     return capitalize(name[0]) + " " + capitalize(name[1]);
   }
+  Future<dynamic> getUserDetails(var userId) async {
+    var details = await http.get("$url/api/v1/users/$userId",
+        headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
+    return jsonDecode(details.body);
+  }
+
+  void goToUserPage(context, var userId) async {
+    var userDetails = await getUserDetails(userId);
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => UserPage(token, userDetails)));
+  }
+
   @override
   Widget build(BuildContext context) {
-    var creation = DateTime.now().difference(DateTime.parse(comment['created_at']).toLocal());
-    //print(now);
-    //print(creation);
+    var creation = DateTime.now()
+        .difference(DateTime.parse(comment['created_at']).toLocal());
     return Container(
-      child: Column(
-        children: <Widget>[
-          ListTile(
-            leading: CircleAvatar(backgroundImage: NetworkImage(comment['user']['profile_image_url']),),
+        child: Column(
+      children: <Widget>[
+        ListTile(
+            leading: InkWell(
+              onTap: ()=>{
+                goToUserPage(context, comment['user']['id'])
+              },
+              child: CircleAvatar(
+              backgroundImage:
+                  NetworkImage(comment['user']['profile_image_url']),
+            )),
             title: Text(comment['text']),
             trailing: Text("$creation"),
             subtitle: Text(getName())),
-        ],
-      )
-    );
+      ],
+    ));
   }
 }

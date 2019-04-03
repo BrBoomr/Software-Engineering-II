@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 class LikesPage extends StatefulWidget {
   final token;
   final List<dynamic> likeList;
-
-  LikesPage(this.token, this.likeList);
+  final postId;
+  LikesPage(this.token, this.likeList, this.postId);
   @override
-  _LikesPageState createState() => _LikesPageState(token, likeList);
+  _LikesPageState createState() => _LikesPageState(token, likeList, postId);
 }
 
 class _LikesPageState extends State<LikesPage> {
   final token;
   final List<dynamic> likeList;
-
-  _LikesPageState(this.token, this.likeList);
+  final postId;
+  _LikesPageState(this.token, this.likeList, this.postId);
   @override
   Widget build(BuildContext context) {
     print(likeList.length);

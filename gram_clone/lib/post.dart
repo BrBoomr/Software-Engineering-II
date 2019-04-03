@@ -43,7 +43,7 @@ class _PostState extends State<Post> {
     var likeList = await getLikeList(postId);
     print(likeList.length);
     Navigator.push(context,
-        MaterialPageRoute(builder: (context) => LikesPage(token, likeList)));
+        MaterialPageRoute(builder: (context) => LikesPage(token, likeList, postId)));
   }
 
   Future<dynamic> getCommentList(var postId) async {
@@ -58,7 +58,7 @@ class _PostState extends State<Post> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => CommentPage(token, commentList)));
+            builder: (context) => CommentPage(token, commentList, postId)));
   }
 
   String getName() {
