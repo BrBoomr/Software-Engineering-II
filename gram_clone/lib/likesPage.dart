@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'main.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'dart:async';
+import 'userPage.dart';
 
 class LikesPage extends StatefulWidget {
   final token;
@@ -15,6 +21,7 @@ class _LikesPageState extends State<LikesPage> {
   final postId;
   _LikesPageState(this.token, this.likeList, this.postId);
   @override
+  
   Widget build(BuildContext context) {
     print(likeList.length);
     return new Scaffold(
@@ -37,18 +44,38 @@ class Like extends StatelessWidget {
   final like;
   final token;
   Like(this.like, this.token);
-  @override
-  Widget build(BuildContext context) {
 
+
+  Future<dynamic> getUserDetails(var userId) async {
+    var details = await http.get("$url/api/v1/users/$userId",
+        headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
+    return jsonDecode(details.body);
+  }
+
+  void goToUserPage(context, var userId) async {
+    var userDetails = await getUserDetails(userId);
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => UserPage(token, userDetails)));
+  }
+
+  @override
+  
+
+  Widget build(BuildContext context) {
+    
     var creation = DateTime.now().difference(DateTime.parse(like['created_at']).toLocal());
-    //print(now);
-    //print(creation);
     return Container(
       child: Column(
         children: <Widget>[
           ListTile(
-            //leading: Image.network(like['']),
-            title: Text(like['user_id'].toString()),
+            leading: InkWell(
+              onTap: ()=>{
+                goToUserPage(context, like['user']['id'])
+              },
+              child: CircleAvatar(
+              backgroundImage:
+                  NetworkImage(like['user']['profile_image_url']),
+            )),
             subtitle: Text("Liked: $creation hours ago")),
         ],
       )

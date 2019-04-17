@@ -80,6 +80,7 @@ class Comment extends StatelessWidget {
     List<String> name = userName.split(' ');
     return capitalize(name[0]) + " " + capitalize(name[1]);
   }
+  
   Future<dynamic> getUserDetails(var userId) async {
     var details = await http.get("$url/api/v1/users/$userId",
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"});

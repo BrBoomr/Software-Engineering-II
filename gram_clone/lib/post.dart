@@ -13,6 +13,7 @@ class Post extends StatefulWidget {
   final token;
   Post(this.post, this.token);
   @override
+  
   _PostState createState() => _PostState(post, token);
 }
 
@@ -21,6 +22,7 @@ class _PostState extends State<Post> {
   final token;
   _PostState(this.post, this.token);
 
+  
   Future<dynamic> getUserDetails(var userId) async {
     var details = await http.get("$url/api/v1/users/$userId",
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
@@ -164,8 +166,8 @@ class _PostState extends State<Post> {
             ))
       ];
     }
-
-    return Container(
+    
+    return Container (
         child: Column(children: <Widget>[
       Column(
         children: barA(),
@@ -211,12 +213,13 @@ class _PostState extends State<Post> {
   }
 }
 
-class LikeContainer extends StatelessWidget {
-  final list;
 
-  LikeContainer(this.list);
+
+class NewPost extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(child: Row(children: <Widget>[]));
+    return Container(
+      
+    );
   }
 }
