@@ -20,6 +20,10 @@ dependencies:
   flutter:
     sdk: flutter
   http: any
+  convert: any
+  image_picker: ^0.5.0+9
+  dio: ^2.1.0
+  timeago: any
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

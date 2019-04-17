@@ -8,6 +8,9 @@ import 'userPage.dart';
 import 'commentsPage.dart';
 import 'likesPage.dart';
 
+import 'package:dio/dio.dart';
+import 'package:image_picker/image_picker.dart';
+
 class Post extends StatefulWidget {
   final post;
   final token;
@@ -213,6 +216,7 @@ class _PostState extends State<Post> {
   }
 }
 
+<<<<<<< HEAD
 
 
 class NewPost extends StatelessWidget {
@@ -220,6 +224,87 @@ class NewPost extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       
+=======
+class NewPost extends StatefulWidget {
+  final token;
+  NewPost(this.token);
+  @override
+  _NewPostState createState() => _NewPostState(token);
+}
+
+class _NewPostState extends State<NewPost> {
+  File _image;
+  final token;
+
+  TextEditingController captionController = TextEditingController();
+  _NewPostState(this.token);
+  Future getImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      _image = image;
+    });
+  }
+
+  void createPost(String caption) async{
+    if(caption.isEmpty){
+      return;
+    }
+    var dio = Dio();
+    FormData formData = FormData.from(<String,dynamic>{
+      'caption': caption,
+      'image': UploadFileInfo(this._image, "image.jpg")
+    });
+
+    await dio.post("$url/api/v1/posts",
+    data: formData,
+    options: Options(headers: {
+      "Authorization":"Bearer $token"
+    })).then((response){
+      print("${response.statusCode}");
+    });
+    setState(() {
+      
+    });
+    Navigator.pop(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: <Widget>[
+        Center(
+        child: _image == null
+            ? Column(
+              children:<Widget>[
+                Text('No image selected.'),
+                SizedBox(height:20),
+                FloatingActionButton(
+                  onPressed: getImage,
+                  tooltip: 'Pick Image',
+                  child: Icon(Icons.add_a_photo))
+              ])
+            : Column(children: <Widget>[    
+                TextField(
+                  controller: captionController,
+                  decoration: InputDecoration(
+                    hintText: "Caption",
+                    contentPadding: const EdgeInsets.all(20)
+                  ),
+                  onSubmitted: (caption) => createPost(caption),
+                ),
+                Container(
+                  constraints: BoxConstraints(maxHeight: 350),
+                  child:  Image.file(_image),),
+        FloatingActionButton(
+        onPressed: getImage,
+        tooltip: 'Pick Image',
+        child: Icon(Icons.add_a_photo),
+      ),
+            ],)
+      ),
+      ],
+>>>>>>> e1f86e09f65592bca9953dab35f9d755b91e5577
     );
   }
 }

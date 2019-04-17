@@ -35,6 +35,7 @@ class Tabs extends StatelessWidget {
                   return Post(posts[index],token);
                 },
               ),
+              NewPost(token)
             ],
           ),
         ),
