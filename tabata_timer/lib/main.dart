@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'addWorkout.dart';
 import 'workoutList.dart';
 import 'clock.dart';
-import 'alertDialogues/prepDialog.dart';
+import 'alertDialogues.dart';
 
 void main() => runApp(MyApp());
 
@@ -33,11 +33,12 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
 
-  var _prepTime = Clock(0,0);
-  var _numRounds = 0;
-  var _workTime = Clock(0,0);
-  var _restTime = Clock(0,0);
-  var _numCycles=0;
+  var _prepTime = Clock(0.0);
+  var _numRounds= 0.0;
+  var _workTime = Clock(0.0);
+  var _restTime = Clock(0.0);
+  var _numCycles = 0.0;
+
 
   List<Widget> toolList(var context) {
     return <Widget>[
@@ -141,35 +142,15 @@ class _MainPageState extends State<MainPage> {
   }
 
   void _prepBox(var context) {
+    callback(value){
+      setState(() {
+       _prepTime=value; 
+      });
+    }
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: new Text("Preparation Time"),
-          content: SingleChildScrollView(
-          child: Slider(
-            min: 0.0,
-            max: 60.0,
-            
-            value: _prepTime.getTimeDouble(),
-            label: _prepTime.getTimeString(),
-            activeColor: Colors.red,
-            inactiveColor: Colors.blue,
-            onChanged: (value){
-              setState(() {
-                _prepTime.setTimeDouble(value.roundToDouble());
-              });
-            },
-          )),
-          actions: <Widget>[
-            new FlatButton(
-              child: new Text("Close"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
+        return PreparationAlert(_prepTime, callback);
       },
     );
   }

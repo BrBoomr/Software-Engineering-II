@@ -1,24 +1,27 @@
 class Clock {
-  var minute ,second;
-  Clock(this.minute,this.second);
-
+  double _second;
+  Clock(this._second);
+  
   String getTimeString(){
-    return "$minute:$second";
+    Duration time = Duration(seconds: _second.toInt());
+    int mins = time.inMinutes;
+    int secs = time.inSeconds-(mins*60);
+    return "$mins:$secs";
   }
   Duration getTimeDuration(){
-    return Duration(minutes: minute, seconds: second);
+    Duration time = Duration(seconds: _second.toInt());
+    int mins = time.inMinutes;
+    int secs = time.inSeconds - (mins*60);
+    return Duration(minutes: mins, seconds: secs);
+  }
+  void setTimeDouble(double secs){
+    this._second = secs;
+  }
+  int getTimeInt(){
+    return getTimeDuration().inSeconds;
   }
   double getTimeDouble(){
     return getTimeDuration().inSeconds.toDouble();
-  }
-  void setTime(var min, var sec){
-    this.minute=min;
-    this.second=sec;
-  }
-
-  void setTimeDouble(double seconds){
-    this.minute = (seconds/60) as int;
-    this.second = seconds - (minute*60);
   }
 
 }
