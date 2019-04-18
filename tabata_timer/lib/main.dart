@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'addWorkout.dart';
 import 'workoutList.dart';
 import 'clock.dart';
+import 'alertDialogues/prepDialog.dart';
 
 void main() => runApp(MyApp());
 
@@ -31,6 +32,13 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+
+  var _prepTime = Clock(0,0);
+  var _numRounds = 0;
+  var _workTime = Clock(0,0);
+  var _restTime = Clock(0,0);
+  var _numCycles=0;
+
   List<Widget> toolList(var context) {
     return <Widget>[
       IconButton(
@@ -49,7 +57,6 @@ class _MainPageState extends State<MainPage> {
   }
 
   List<Widget> mainList() {
-    Clock _clock = Clock(3,30);
     return <Widget>[
       SizedBox(height: 10),
       InkWell(
@@ -57,9 +64,9 @@ class _MainPageState extends State<MainPage> {
           onTap: () => {_prepBox(context)},
           child: Card(
               child: ListTile(
-            title: Center(child: Text("Preparation ${_clock.getTimeString()}")),
+            title: Center(child: Text("Preparation")),
             subtitle: Center(
-              child: Text("0:20"),
+              child: Text(_prepTime.getTimeString()),
             ),
           ))),
       InkWell(
@@ -69,7 +76,7 @@ class _MainPageState extends State<MainPage> {
               child: ListTile(
             title: Center(child: Text("Rounds")),
             subtitle: Center(
-              child: Text("12"),
+              child: Text(_numRounds.toString()),
             ),
           ))),
       InkWell(
@@ -79,7 +86,7 @@ class _MainPageState extends State<MainPage> {
               child: ListTile(
             title: Center(child: Text("Work")),
             subtitle: Center(
-              child: Text("3:00"),
+              child: Text(_workTime.getTimeString()),
             ),
           ))),
       InkWell(
@@ -89,7 +96,7 @@ class _MainPageState extends State<MainPage> {
               child: ListTile(
             title: Center(child: Text("Rest")),
             subtitle: Center(
-              child: Text("0:50"),
+              child: Text(_restTime.getTimeString()),
             ),
           ))),
       InkWell(
@@ -99,7 +106,7 @@ class _MainPageState extends State<MainPage> {
               child: ListTile(
             title: Center(child: Text("Cycles")),
             subtitle: Center(
-              child: Text("1"),
+              child: Text(_numCycles.toString()),
             ),
           ))),
       Divider(),
@@ -138,8 +145,22 @@ class _MainPageState extends State<MainPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: new Text("Workout Detail"),
-          content: new Text("List of Contents"),
+          title: new Text("Preparation Time"),
+          content: SingleChildScrollView(
+          child: Slider(
+            min: 0.0,
+            max: 60.0,
+            
+            value: _prepTime.getTimeDouble(),
+            label: _prepTime.getTimeString(),
+            activeColor: Colors.red,
+            inactiveColor: Colors.blue,
+            onChanged: (value){
+              setState(() {
+                _prepTime.setTimeDouble(value.roundToDouble());
+              });
+            },
+          )),
           actions: <Widget>[
             new FlatButton(
               child: new Text("Close"),
@@ -161,8 +182,14 @@ class _MainPageState extends State<MainPage> {
           title: new Text("Workout Detail"),
           content: new Text("List of Contents"),
           actions: <Widget>[
-            new FlatButton(
-              child: new Text("Close"),
+            FlatButton(
+              child: new Text("Save"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: new Text("Discard"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -246,4 +273,5 @@ class _MainPageState extends State<MainPage> {
         ));
   }
 }
+
 

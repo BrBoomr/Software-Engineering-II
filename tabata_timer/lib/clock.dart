@@ -8,12 +8,17 @@ class Clock {
   Duration getTimeDuration(){
     return Duration(minutes: minute, seconds: second);
   }
-
-  void setMinute(var min){
-    this.minute=min;
+  double getTimeDouble(){
+    return getTimeDuration().inSeconds.toDouble();
   }
-  void setSeconds(var sec){
+  void setTime(var min, var sec){
+    this.minute=min;
     this.second=sec;
+  }
+
+  void setTimeDouble(double seconds){
+    this.minute = (seconds/60) as int;
+    this.second = seconds - (minute*60);
   }
 
 }
