@@ -34,7 +34,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
 
   var _prepTime = Clock(0.0);
-  var _numRounds= 0.0;
+  int _numRounds= 0;
   var _workTime = Clock(0.0);
   var _restTime = Clock(0.0);
   var _numCycles = 0.0;
@@ -156,27 +156,15 @@ class _MainPageState extends State<MainPage> {
   }
 
   void _roundBox(var context) {
+    callback(value){
+      setState(() {
+       _numRounds=value; 
+      });
+    }
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: new Text("Workout Detail"),
-          content: new Text("List of Contents"),
-          actions: <Widget>[
-            FlatButton(
-              child: new Text("Save"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            FlatButton(
-              child: new Text("Discard"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
+        return RoundsAlert(_numRounds, callback);
       },
     );
   }
