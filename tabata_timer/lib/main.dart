@@ -37,7 +37,7 @@ class _MainPageState extends State<MainPage> {
   int _numRounds= 0;
   var _workTime = Clock(0.0);
   var _restTime = Clock(0.0);
-  var _numCycles = 0.0;
+  int _numCycles = 0;
 
 
   List<Widget> toolList(var context) {
@@ -170,61 +170,43 @@ class _MainPageState extends State<MainPage> {
   }
 
   void _workBox(var context) {
+    callback(value){
+      setState(() {
+       _workTime = value; 
+      });
+    }
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: new Text("Workout Detail"),
-          content: new Text("List of Contents"),
-          actions: <Widget>[
-            new FlatButton(
-              child: new Text("Close"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
+        return WorkAlert(_workTime,callback);
       },
     );
   }
 
   void _restBox(var context) {
+    callback(value){
+      setState(() {
+       _restTime = value; 
+      });
+    }
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: new Text("Workout Detail"),
-          content: new Text("List of Contents"),
-          actions: <Widget>[
-            new FlatButton(
-              child: new Text("Close"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
+        return RestAlert(_restTime,callback);
       },
     );
   }
 
   void _cycleBox(var context) {
+    callback(value){
+      setState(() {
+       _numCycles=value; 
+      });
+    }
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: new Text("Workout Detail"),
-          content: new Text("List of Contents"),
-          actions: <Widget>[
-            new FlatButton(
-              child: new Text("Close"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
+        return CycleAlert(_numCycles,callback);
       },
     );
   }
