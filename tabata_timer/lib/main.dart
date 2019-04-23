@@ -3,6 +3,7 @@ import 'addWorkout.dart';
 import 'workoutList.dart';
 import 'clock.dart';
 import 'alertDialogues.dart';
+import 'timerPage.dart';
 
 void main() => runApp(MyApp());
 
@@ -32,13 +33,11 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-
   var _prepTime = Clock(0.0);
-  int _numRounds= 0;
+  int _numRounds = 0;
   var _workTime = Clock(0.0);
   var _restTime = Clock(0.0);
   int _numCycles = 0;
-
 
   List<Widget> toolList(var context) {
     return <Widget>[
@@ -113,7 +112,12 @@ class _MainPageState extends State<MainPage> {
       Divider(),
       SizedBox(height: 20),
       RaisedButton(
-        onPressed: () => {},
+        onPressed: () => {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => TimerPage()),
+              ),
+            },
         child: Text("Start"),
         color: Colors.green,
         padding: const EdgeInsets.all(30),
@@ -142,11 +146,12 @@ class _MainPageState extends State<MainPage> {
   }
 
   void _prepBox(var context) {
-    callback(value){
+    callback(value) {
       setState(() {
-       _prepTime=value; 
+        _prepTime = value;
       });
     }
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -156,11 +161,12 @@ class _MainPageState extends State<MainPage> {
   }
 
   void _roundBox(var context) {
-    callback(value){
+    callback(value) {
       setState(() {
-       _numRounds=value; 
+        _numRounds = value;
       });
     }
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -170,43 +176,46 @@ class _MainPageState extends State<MainPage> {
   }
 
   void _workBox(var context) {
-    callback(value){
+    callback(value) {
       setState(() {
-       _workTime = value; 
+        _workTime = value;
       });
     }
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return WorkAlert(_workTime,callback);
+        return WorkAlert(_workTime, callback);
       },
     );
   }
 
   void _restBox(var context) {
-    callback(value){
+    callback(value) {
       setState(() {
-       _restTime = value; 
+        _restTime = value;
       });
     }
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return RestAlert(_restTime,callback);
+        return RestAlert(_restTime, callback);
       },
     );
   }
 
   void _cycleBox(var context) {
-    callback(value){
+    callback(value) {
       setState(() {
-       _numCycles=value; 
+        _numCycles = value;
       });
     }
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return CycleAlert(_numCycles,callback);
+        return CycleAlert(_numCycles, callback);
       },
     );
   }
@@ -224,5 +233,3 @@ class _MainPageState extends State<MainPage> {
         ));
   }
 }
-
-

@@ -50,7 +50,7 @@ class _PreparationAlertState extends State<PreparationAlert> {
 
 //-------------------------------------------------------------------------------
 class RoundsAlert extends StatefulWidget {
-  final int _numRounds;
+  int _numRounds;
   Function callback;
   RoundsAlert(this._numRounds, this.callback);
   @override
@@ -196,7 +196,7 @@ class _RestAlertState extends State<RestAlert> {
 class CycleAlert extends StatefulWidget {
   final int _numCycles;
   Function callback;
-  CycleAlert(this._numCycles, callback);
+  CycleAlert(this._numCycles, this.callback);
   @override
   _CycleAlertState createState() => _CycleAlertState(_numCycles);
 }
