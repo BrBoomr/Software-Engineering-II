@@ -9,8 +9,8 @@ String timeText(int secs){
 }
 
 class PreparationAlert extends StatefulWidget {
-  var _prepTime;
-  Function callback;
+  final  _prepTime;
+  final Function callback;
   PreparationAlert(this._prepTime, this.callback);
   @override
   _PreparationAlertState createState() => _PreparationAlertState(_prepTime);
@@ -59,8 +59,8 @@ class _PreparationAlertState extends State<PreparationAlert> {
 
 //-------------------------------------------------------------------------------
 class RoundsAlert extends StatefulWidget {
-  int _numRounds;
-  Function callback;
+  final int _numRounds;
+  final Function callback;
   RoundsAlert(this._numRounds, this.callback);
   @override
   _RoundsAlertState createState() => _RoundsAlertState(_numRounds);
@@ -105,8 +105,8 @@ class _RoundsAlertState extends State<RoundsAlert> {
 }
 //-------------------------------------------------------------------------------
 class WorkAlert extends StatefulWidget {
-  var _workTime;
-  Function callback;
+  final _workTime;
+  final Function callback;
 
   WorkAlert(this._workTime,this.callback);
   @override
@@ -114,7 +114,7 @@ class WorkAlert extends StatefulWidget {
 }
 
 class _WorkAlertState extends State<WorkAlert> {
-  var _workTime;
+  final _workTime;
   _WorkAlertState(this._workTime);
   @override
   Widget build(BuildContext context) {
@@ -126,7 +126,7 @@ class _WorkAlertState extends State<WorkAlert> {
       content: SingleChildScrollView(
           child: Slider(
         min: 0.0,
-        max: 600.0,
+        max: 180.0,
         value: _workTime.getTimeDouble(),
         onChanged: (double value) {
           setState(() => {
@@ -155,8 +155,8 @@ class _WorkAlertState extends State<WorkAlert> {
 }
 //-------------------------------------------------------------------------------
 class RestAlert extends StatefulWidget {
-  var _restTime;
-  Function callback;
+  final _restTime;
+  final Function callback;
 
   RestAlert(this._restTime,this.callback);
   @override
@@ -164,7 +164,7 @@ class RestAlert extends StatefulWidget {
 }
 
 class _RestAlertState extends State<RestAlert> {
-  var _restTime;
+  final _restTime;
   _RestAlertState(this._restTime);
   @override
   Widget build(BuildContext context) {
@@ -206,14 +206,14 @@ class _RestAlertState extends State<RestAlert> {
 //-------------------------------------------------------------------------------
 class CycleAlert extends StatefulWidget {
   final int _numCycles;
-  Function callback;
+  final Function callback;
   CycleAlert(this._numCycles, this.callback);
   @override
   _CycleAlertState createState() => _CycleAlertState(_numCycles);
 }
 
 class _CycleAlertState extends State<CycleAlert> {
-  int _numCycles;
+  var _numCycles;
 
   _CycleAlertState(this._numCycles);
   @override

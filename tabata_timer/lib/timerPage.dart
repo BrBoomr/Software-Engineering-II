@@ -14,34 +14,47 @@ class _TimerPageState extends State<TimerPage> {
   final Map<String, int> valueSet;
   _TimerPageState(this.valueSet);
 
-  Stopwatch _stopwatch = Stopwatch();
+  //Stopwatch _stopwatch = Stopwatch();
   Timer _timer;
   int _timeLeft = 0;
   int _roundsLeft = 0;
 
-  bool complete = false;
+  bool _complete = false;
+  bool _control = true; // True => Running, False => Paused
   @override
   void initState() {
     _timeLeft = valueSet["_workTime"];
     _roundsLeft = valueSet["_numRounds"];
+    startTimer();
     super.initState();
   }
 
-  void controlTimer(){
-
+  void _pause(){
+    _control = false;
+  }
+  void _resume(){
+    _control = true;
   }
   void startTimer() {
+    if(_complete){
+      return;
+    }
+    //_stopwatch.start();
+    //_control = true;
     callback(Timer timer) {
       setState(() {
         if (_timeLeft < 1) {
           if (_roundsLeft < 1) {
+            _complete = true;
             timer.cancel();
           } else {
             _roundsLeft--;
             _timeLeft = valueSet["_workTime"];
           }
         } else {
-          _timeLeft--;
+          if(_control){
+            _timeLeft--;
+          }
         }
       });
     }
@@ -69,21 +82,24 @@ class _TimerPageState extends State<TimerPage> {
   Widget build(BuildContext context) {
     //var keys = valueSet.keys.toList(); => valueSet[keys[index]]
     return new Scaffold(
-        appBar: AppBar(title: Text("Timer")),
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text("Timer")),
         body: Center(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text("Time Left : ${timeText(_timeLeft)}"),
             Text("Rounds Left: $_roundsLeft"),
-            Text(_roundsLeft == 0 && _timeLeft == 0 ? "Done!" : ""),
+            Text(_complete ? "Done!" : ""),
             RaisedButton(
               padding:
                   const EdgeInsets.only(left: 100, right: 100, top: 25, bottom: 25),
               onPressed: () {
-                _stopwatch.isRunning ? controlTimer() :  startTimer();
+                _control ? _pause() :  _resume();
               },
-              child: Text("Start"),
+              child: Text(_control ? "Pause" : "Resume"),
+              color: _control ? Colors.red : Colors.green,
             ),
           ],
         )));
