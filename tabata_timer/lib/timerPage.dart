@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-//_workTime holds the amount of seconds that a round last
-//_numRounds holds the amount of rounds with _workTime amount.
-//foreach _numRounds => _workTime
 
-//If using Stopwatch, it would count up from 0 up to the _workTime intended.
-//Subtratcing from _workTime with current Stopwatch time should indicate time remaining.
+
+
+
+
+
+
+
 class TimerPage extends StatefulWidget {
   final Map<String, int> valueSet;
 
@@ -20,10 +22,9 @@ class _TimerPageState extends State<TimerPage> {
   final Map<String, int> valueSet;
   _TimerPageState(this.valueSet);
 
-  //Stopwatch _stopwatch = Stopwatch();
+  Stopwatch _stopwatch = Stopwatch();
   Timer _timer;
   int _timeLeft = 0;
-  int _currentTime = 0;
   int _roundsLeft = 0;
 
   bool complete = false;
@@ -34,61 +35,36 @@ class _TimerPageState extends State<TimerPage> {
     super.initState();
   }
 
+  void controlTimer(){
+
+  }
   void startTimer() {
-    /*
-    if (complete) {
-      return;
-    }
-    _stopwatch.start();
-    _currentTime = _stopwatch.elapsedMilliseconds ~/ 1000;
-    while (!complete) {
-      if (_currentTime != _stopwatch.elapsedMilliseconds ~/ 1000) {
-        setState(() {
-          _currentTime = _stopwatch.elapsedMilliseconds ~/ 1000;
-          print(_currentTime);
-          if (_timeLeft < 1) {
-            if (_roundsLeft < 1) {
-              complete = true;
-              _stopwatch.stop();
-            } else {
-              _roundsLeft--;
-              _timeLeft = valueSet["_workTime"];
-              _stopwatch.reset();
-            }
+    callback(Timer timer) {
+      setState(() {
+        if (_timeLeft < 1) {
+          if (_roundsLeft < 1) {
+            timer.cancel();
           } else {
-            _timeLeft -= _currentTime;
+            _roundsLeft--;
+            _timeLeft = valueSet["_workTime"];
           }
-        });
-      }
+        } else {
+          _timeLeft--;
+        }
+      });
     }
-    */
-    
+
     const oneSec = const Duration(seconds: 1);
     _timeLeft = valueSet["_workTime"];
-    _timer = new Timer.periodic(
-        oneSec,
-        (Timer timer) => setState(() {
-              if (_timeLeft < 1) {
-                if (_roundsLeft < 1) {
-                  timer.cancel();
-                } else {
-                  _roundsLeft--;
-                  _timeLeft = valueSet["_workTime"];
-                }
-              } else {
-                _timeLeft--;
-              }
-            }));
-    
+    _timer = new Timer.periodic(oneSec, callback);
   }
 
   @override
-  
   void dispose() {
     _timer.cancel();
     super.dispose();
   }
-  
+
   Widget build(BuildContext context) {
     //var keys = valueSet.keys.toList(); => valueSet[keys[index]]
     return new Scaffold(
@@ -104,7 +80,7 @@ class _TimerPageState extends State<TimerPage> {
               padding:
                   EdgeInsets.only(left: 100, right: 100, top: 25, bottom: 25),
               onPressed: () {
-                startTimer();
+                _stopwatch.isRunning ? controlTimer() :  startTimer();
               },
               child: Text("Start"),
             ),
