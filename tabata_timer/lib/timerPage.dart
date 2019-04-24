@@ -39,8 +39,6 @@ class _TimerPageState extends State<TimerPage> {
     if(_complete){
       return;
     }
-    //_stopwatch.start();
-    //_control = true;
     callback(Timer timer) {
       setState(() {
         if (_timeLeft < 1) {
@@ -80,7 +78,6 @@ class _TimerPageState extends State<TimerPage> {
   }
 
   Widget build(BuildContext context) {
-    //var keys = valueSet.keys.toList(); => valueSet[keys[index]]
     return new Scaffold(
         appBar: AppBar(
           centerTitle: true,
