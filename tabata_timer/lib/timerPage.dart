@@ -1,14 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-
-
-
-
-
-
-
-
 class TimerPage extends StatefulWidget {
   final Map<String, int> valueSet;
 
@@ -59,6 +51,15 @@ class _TimerPageState extends State<TimerPage> {
     _timer = new Timer.periodic(oneSec, callback);
   }
 
+  String timeText(int secs){
+    int min, sec;
+    min = secs ~/ 60;
+    sec = secs - (min * 60);
+    String minText = "$min".padLeft(2, "0");
+    String secText = "$sec".padLeft(2, "0");
+    return minText+":"+secText;
+  }
+
   @override
   void dispose() {
     _timer.cancel();
@@ -68,17 +69,17 @@ class _TimerPageState extends State<TimerPage> {
   Widget build(BuildContext context) {
     //var keys = valueSet.keys.toList(); => valueSet[keys[index]]
     return new Scaffold(
-        appBar: AppBar(title: Text("Timer test")),
+        appBar: AppBar(title: Text("Timer")),
         body: Center(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text("Seconds Left : $_timeLeft"),
+            Text("Time Left : ${timeText(_timeLeft)}"),
             Text("Rounds Left: $_roundsLeft"),
             Text(_roundsLeft == 0 && _timeLeft == 0 ? "Done!" : ""),
             RaisedButton(
               padding:
-                  EdgeInsets.only(left: 100, right: 100, top: 25, bottom: 25),
+                  const EdgeInsets.only(left: 100, right: 100, top: 25, bottom: 25),
               onPressed: () {
                 _stopwatch.isRunning ? controlTimer() :  startTimer();
               },

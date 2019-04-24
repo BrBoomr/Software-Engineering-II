@@ -1,4 +1,12 @@
 import 'package:flutter/material.dart';
+String timeText(int secs){
+    int min, sec;
+    min = secs ~/ 60;
+    sec = secs - (min * 60);
+    String minText = "$min".padLeft(2, "0");
+    String secText = "$sec".padLeft(2, "0");
+    return minText+":"+secText;
+}
 
 class PreparationAlert extends StatefulWidget {
   var _prepTime;
@@ -118,7 +126,7 @@ class _WorkAlertState extends State<WorkAlert> {
       content: SingleChildScrollView(
           child: Slider(
         min: 0.0,
-        max: 60.0,
+        max: 600.0,
         value: _workTime.getTimeDouble(),
         onChanged: (double value) {
           setState(() => {

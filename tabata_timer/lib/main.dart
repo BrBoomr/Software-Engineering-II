@@ -48,7 +48,9 @@ class _MainPageState extends State<MainPage> {
       "_restTime" : _restTime.getTimeInt(),
       "_numCycles" : _numCycles
     };
+    super.initState();
   }
+  
   List<Widget> toolList(var context) {
     return <Widget>[
       IconButton(
