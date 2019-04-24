@@ -30,16 +30,17 @@ class _PreparationAlertState extends State<PreparationAlert> {
         },
       )),
       actions: <Widget>[
+        
         FlatButton(
-          child: Text("Save"),
+          child: Text("Discard"),
           onPressed: () {
-            this.widget.callback(_prepTime);
             Navigator.of(context).pop();
           },
         ),
         FlatButton(
-          child: Text("Discard"),
+          child: Text("Save"),
           onPressed: () {
+            this.widget.callback(_prepTime);
             Navigator.of(context).pop();
           },
         ),
@@ -78,15 +79,15 @@ class _RoundsAlertState extends State<RoundsAlert> {
       )),
       actions: <Widget>[
         FlatButton(
-          child: new Text("Save"),
+          child: new Text("Discard"),
           onPressed: () {
-            this.widget.callback(_numRounds);
             Navigator.of(context).pop();
           },
         ),
         FlatButton(
-          child: new Text("Discard"),
+          child: new Text("Save"),
           onPressed: () {
+            this.widget.callback(_numRounds);
             Navigator.of(context).pop();
           },
         ),
@@ -126,16 +127,17 @@ class _WorkAlertState extends State<WorkAlert> {
         },
       )),
       actions: <Widget>[
+        
         FlatButton(
-          child: Text("Save"),
+          child: Text("Discard"),
           onPressed: () {
-            this.widget.callback(_workTime);
             Navigator.of(context).pop();
           },
         ),
         FlatButton(
-          child: Text("Discard"),
+          child: Text("Save"),
           onPressed: () {
+            this.widget.callback(_workTime);
             Navigator.of(context).pop();
           },
         ),
@@ -175,16 +177,17 @@ class _RestAlertState extends State<RestAlert> {
         },
       )),
       actions: <Widget>[
+        
         FlatButton(
-          child: Text("Save"),
+          child: Text("Discard"),
           onPressed: () {
-            this.widget.callback(_restTime);
             Navigator.of(context).pop();
           },
         ),
         FlatButton(
-          child: Text("Discard"),
+          child: Text("Save"),
           onPressed: () {
+            this.widget.callback(_restTime);
             Navigator.of(context).pop();
           },
         ),
@@ -221,16 +224,17 @@ class _CycleAlertState extends State<CycleAlert> {
         },
       )),
       actions: <Widget>[
+        
         FlatButton(
-          child: new Text("Save"),
+          child: new Text("Discard"),
           onPressed: () {
-            this.widget.callback(_numCycles);
             Navigator.of(context).pop();
           },
         ),
         FlatButton(
-          child: new Text("Discard"),
+          child: new Text("Save"),
           onPressed: () {
+            this.widget.callback(_numCycles);
             Navigator.of(context).pop();
           },
         ),

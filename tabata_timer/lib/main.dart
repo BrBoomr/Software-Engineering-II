@@ -38,7 +38,17 @@ class _MainPageState extends State<MainPage> {
   var _workTime = Clock(0.0);
   var _restTime = Clock(0.0);
   int _numCycles = 0;
+  Map<String, int> valueSet;
 
+  void initState(){
+    valueSet = {
+      "_prepTime" : _prepTime.getTimeInt(),
+      "_numRounds" : _numRounds,
+      "_workTime" : _workTime.getTimeInt(),
+      "_restTime" : _restTime.getTimeInt(),
+      "_numCycles" : _numCycles
+    };
+  }
   List<Widget> toolList(var context) {
     return <Widget>[
       IconButton(
@@ -115,7 +125,7 @@ class _MainPageState extends State<MainPage> {
         onPressed: () => {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => TimerPage()),
+                MaterialPageRoute(builder: (context) => TimerPage(valueSet)),
               ),
             },
         child: Text("Start"),
@@ -149,6 +159,7 @@ class _MainPageState extends State<MainPage> {
     callback(value) {
       setState(() {
         _prepTime = value;
+        valueSet["_prepTime"] = _prepTime.getTimeInt();
       });
     }
 
@@ -164,6 +175,7 @@ class _MainPageState extends State<MainPage> {
     callback(value) {
       setState(() {
         _numRounds = value;
+        valueSet["_numRounds"] = _numRounds;
       });
     }
 
@@ -179,6 +191,7 @@ class _MainPageState extends State<MainPage> {
     callback(value) {
       setState(() {
         _workTime = value;
+        valueSet["_workTime"] = _workTime.getTimeInt();
       });
     }
 
@@ -194,6 +207,7 @@ class _MainPageState extends State<MainPage> {
     callback(value) {
       setState(() {
         _restTime = value;
+        valueSet["_restTime"] = _restTime.getTimeInt();
       });
     }
 
@@ -209,6 +223,7 @@ class _MainPageState extends State<MainPage> {
     callback(value) {
       setState(() {
         _numCycles = value;
+        valueSet["_numCycles"] = _numCycles;
       });
     }
 
