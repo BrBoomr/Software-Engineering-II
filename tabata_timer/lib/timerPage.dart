@@ -35,6 +35,7 @@ class _TimerPageState extends State<TimerPage> {
   void _resume(){
     _control = true;
   }
+  
   void startTimer() {
     if(_complete){
       return;
