@@ -17,14 +17,14 @@ class _TimerPageState extends State<TimerPage> {
   //Stopwatch _stopwatch = Stopwatch();
   Timer _timer;
   int _timeLeft = 0;
-  int _roundsLeft = 0;
+  int _curRound = 1;
 
   bool _complete = false;
   bool _control = true; // True => Running, False => Paused
   @override
   void initState() {
     _timeLeft = valueSet["_workTime"];
-    _roundsLeft = valueSet["_numRounds"];
+    //_curRound = valueSet["_numRounds"];
     startTimer();
     super.initState();
   }
@@ -42,11 +42,11 @@ class _TimerPageState extends State<TimerPage> {
     callback(Timer timer) {
       setState(() {
         if (_timeLeft < 1) {
-          if (_roundsLeft < 1) {
+          if (_curRound >= valueSet["_numRounds"]) {
             _complete = true;
             timer.cancel();
           } else {
-            _roundsLeft--;
+            _curRound++;
             _timeLeft = valueSet["_workTime"];
           }
         } else {
@@ -56,7 +56,6 @@ class _TimerPageState extends State<TimerPage> {
         }
       });
     }
-
     const oneSec = const Duration(seconds: 1);
     _timeLeft = valueSet["_workTime"];
     _timer = new Timer.periodic(oneSec, callback);
@@ -86,17 +85,19 @@ class _TimerPageState extends State<TimerPage> {
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text("Time Left : ${timeText(_timeLeft)}"),
-            Text("Rounds Left: $_roundsLeft"),
-            Text(_complete ? "Done!" : ""),
+            Text("${timeText(_timeLeft)}",
+              style: TextStyle(fontSize: 130),),
+            Text("$_curRound / ${valueSet["_numRounds"]}",
+              style: TextStyle(fontSize: 65),),
+            //Text(_complete ? "Done!" : ""),
             RaisedButton(
               padding:
                   const EdgeInsets.only(left: 100, right: 100, top: 25, bottom: 25),
               onPressed: () {
                 _control ? _pause() :  _resume();
               },
-              child: Text(_control ? "Pause" : "Resume"),
-              color: _control ? Colors.red : Colors.green,
+              child: _complete ? Text("Done!") : Text(_control ? "Pause" : "Resume"),
+              color: _complete ? Colors.blue : _control ? Colors.red : Colors.green,
             ),
           ],
         )));
