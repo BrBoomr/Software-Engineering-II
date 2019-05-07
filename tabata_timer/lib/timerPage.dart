@@ -10,97 +10,117 @@ class TimerPage extends StatefulWidget {
   _TimerPageState createState() => _TimerPageState(valueSet);
 }
 
-class _TimerPageState extends State<TimerPage> {
+class _TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
   final Map<String, int> valueSet;
   _TimerPageState(this.valueSet);
 
-  //Stopwatch _stopwatch = Stopwatch();
-  Timer _timer;
-  int _timeLeft = 0;
-  int _curRound = 1;
+  AnimationController animationController;
+  int currentStep = 0;
+  int currentRound = 0;
+  List<CurrentTimer> timerList = <CurrentTimer>[];
+  int totalRounds = 0;
+  int totalSteps = 0;
+  bool complete = false;
 
-  bool _complete = false;
-  bool _control = true; // True => Running, False => Paused
+  String get timerString {
+    Duration duration =
+        animationController.duration * animationController.value;
+    return '${(duration.inSeconds)}';
+  }
+
   @override
   void initState() {
-    _timeLeft = valueSet["_workTime"];
-    //_curRound = valueSet["_numRounds"];
-    startTimer();
     super.initState();
+    currentStep = 0;
+    totalRounds = valueSet['_numRounds'];
+    timerList.add(CurrentTimer("Prep", valueSet["_prepTime"]));
+    for(int x=1; x<totalRounds; x++){
+      //timerList.add(x%2 ==0 ? CurrentTimer("Rest", valueSet["_restTime"]) : CurrentTimer("Work", valueSet["_workTime"]));
+      timerList.add(CurrentTimer("Work", valueSet["_workTime"]));
+      timerList.add(CurrentTimer("Rest", valueSet["_restTime"]));
+    }
+    timerList.add(CurrentTimer("Work", valueSet["_workTime"]));
+    totalSteps = timerList.length;
+
+    print("Total Steps: $totalSteps");
+    print("Total Rounds: $totalRounds");
+    animationController = AnimationController(
+        vsync: this, 
+        duration: Duration(seconds: timerList[currentStep].time));
+    animationController.reverse(
+        from:
+            animationController.value == 0.0 ? 1.0 : animationController.value);
   }
 
-  void _pause(){
-    _control = false;
-  }
-  void _resume(){
-    _control = true;
-  }
   
-  void startTimer() {
-    if(_complete){
-      return;
-    }
-    callback(Timer timer) {
-      setState(() {
-        if (_timeLeft < 1) {
-          if (_curRound >= valueSet["_numRounds"]) {
-            _complete = true;
-            timer.cancel();
-          } else {
-            _curRound++;
-            _timeLeft = valueSet["_workTime"];
-          }
-        } else {
-          if(_control){
-            _timeLeft--;
-          }
-        }
-      });
-    }
-    const oneSec = const Duration(seconds: 1);
-    _timeLeft = valueSet["_workTime"];
-    _timer = new Timer.periodic(oneSec, callback);
+
+  bool timerFinished() {
+    return animationController.value == 0;
   }
 
-  String timeText(int secs){
-    int min, sec;
-    min = secs ~/ 60;
-    sec = secs - (min * 60);
-    String minText = "$min".padLeft(2, "0");
-    String secText = "$sec".padLeft(2, "0");
-    return minText+":"+secText;
+  bool onLastRound() {
+    return currentRound == totalRounds;
   }
 
-  @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
+  bool finishedAllSteps() {
+    return timerFinished() && onLastRound();
+  }
+
+  void restartTimer() {
+    if(currentStep%2==1){
+      currentRound++;
+    }
+    animationController.duration = Duration(seconds: timerList[currentStep].time);
+    animationController.reverse(
+        from:
+            animationController.value == 0.0 ? 1.0 : animationController.value);
   }
 
   Widget build(BuildContext context) {
     return new Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text("Timer")),
-        body: Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text("${timeText(_timeLeft)}",
-              style: TextStyle(fontSize: 130),),
-            Text("$_curRound / ${valueSet["_numRounds"]}",
-              style: TextStyle(fontSize: 65),),
-            //Text(_complete ? "Done!" : ""),
-            RaisedButton(
-              padding:
-                  const EdgeInsets.only(left: 100, right: 100, top: 25, bottom: 25),
-              onPressed: () {
-                _control ? _pause() :  _resume();
-              },
-              child: _complete ? Text("Done!") : Text(_control ? "Pause" : "Resume"),
-              color: _complete ? Colors.blue : _control ? Colors.red : Colors.green,
-            ),
-          ],
-        )));
+        appBar: AppBar(centerTitle: true, title: Text("Timer")),
+        body: AnimatedBuilder(
+          animation: animationController,
+          builder: (BuildContext context, Widget child) {
+            if (finishedAllSteps()) {
+              return Text("Complete!");
+            } 
+            else {
+              if (timerFinished() && !onLastRound()) {
+                currentStep += 1;
+                restartTimer();
+              }
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(timerList[currentStep].title,
+                      style: TextStyle(fontSize: 80)),
+                    Text(timeText(int.parse(timerString)),
+                      style: TextStyle(fontSize: 130)),
+                    Text("$currentRound / ${valueSet['_numRounds']}",
+                      style: TextStyle(fontSize: 65)),
+
+                ]),
+              );
+            }
+          },
+        ));
   }
+}
+
+class CurrentTimer {
+  String title;
+  int time;
+  bool paused = false;
+  CurrentTimer(this.title, this.time);
+}
+
+String timeText(int secs) {
+  int min, sec;
+  min = secs ~/ 60;
+  sec = secs - (min * 60);
+  String minText = "$min".padLeft(2, "0");
+  String secText = "$sec".padLeft(2, "0");
+  return minText + ":" + secText;
 }
