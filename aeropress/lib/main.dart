@@ -87,7 +87,7 @@ class RecipeDetail extends StatelessWidget {
                   alignment: Alignment.center,
                   height: 100,
                   width: 100,
-                  child: Text(recipe.brew_method),
+                  child: Text(recipe.brewMethod),
                 ),
                 //Coffee Volume
                 Container(
@@ -97,7 +97,7 @@ class RecipeDetail extends StatelessWidget {
                   alignment: Alignment.center,
                     height: 100,
                     width: 100,
-                    child: Text("${recipe.coffee_volume_grams} \ngrams", textAlign: TextAlign.center,)),
+                    child: Text("${recipe.coffeeVolumeGrams} \ngrams", textAlign: TextAlign.center,)),
                 //Grind Size
                 Container(
                   decoration: BoxDecoration(
@@ -106,7 +106,7 @@ class RecipeDetail extends StatelessWidget {
                   alignment: Alignment.center,
                   height: 100,
                   width: 100,
-                  child: Text(recipe.grind_size),
+                  child: Text(recipe.grindSize),
                 ),
               ],
             ),
@@ -121,7 +121,7 @@ class RecipeDetail extends StatelessWidget {
                   alignment: Alignment.center,
                   height: 100,
                   width: 100,
-                  child: Text("${recipe.water_volume_grams}\n Grams", textAlign: TextAlign.center,),
+                  child: Text("${recipe.waterVolumeGrams}\n Grams", textAlign: TextAlign.center,),
                 ),
                 //Temp
                 Container(

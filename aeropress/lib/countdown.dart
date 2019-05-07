@@ -3,7 +3,7 @@ import 'recipe.dart';
 import 'package:flutter/material.dart';
 
 class TimerScreen extends StatefulWidget {
-  CoffeeRecipe recipe;
+  final CoffeeRecipe recipe;
 
   TimerScreen(this.recipe);
 
@@ -11,10 +11,11 @@ class TimerScreen extends StatefulWidget {
   _TimerScreenState createState() => _TimerScreenState();
 }
 
-class _TimerScreenState extends State<TimerScreen> with TickerProviderStateMixin {
+class _TimerScreenState extends State<TimerScreen>
+    with TickerProviderStateMixin {
   AnimationController animationController;
-  int current_step=0;
-  int total_steps=0;
+  int currentStep = 0;
+  int totalSteps = 0;
   bool finished;
 
   String get timerString {
@@ -27,35 +28,34 @@ class _TimerScreenState extends State<TimerScreen> with TickerProviderStateMixin
   void initState() {
     super.initState();
 
-    current_step = 0;
-    total_steps =widget.recipe.steps.length;
+    currentStep = 0;
+    totalSteps = widget.recipe.steps.length;
     finished = false;
 
-    animationController =
-        AnimationController(vsync: this, duration: Duration(seconds: widget.recipe.steps[current_step].time));
-        animationController.reverse(
-        from: animationController.value == 0.0
-            ? 1.0
-            : animationController.value);
+    animationController = AnimationController(
+        vsync: this,
+        duration: Duration(seconds: widget.recipe.steps[currentStep].time));
+    animationController.reverse(
+        from:
+            animationController.value == 0.0 ? 1.0 : animationController.value);
   }
 
-  bool timerFinished(){
+  bool timerFinished() {
     return animationController.value == 0;
   }
 
-  bool onLastStep(){
-    return current_step == total_steps - 1;
+  bool onLastStep() {
+    return currentStep == totalSteps - 1;
   }
 
-  bool finishedAllSteps(){
+  bool finishedAllSteps() {
     return timerFinished() && onLastStep();
   }
 
-  void restartTimer(){
+  void restartTimer() {
     animationController.reverse(
-    from: animationController.value == 0.0
-        ? 1.0
-        : animationController.value);
+        from:
+            animationController.value == 0.0 ? 1.0 : animationController.value);
   }
 
   @override
@@ -63,27 +63,27 @@ class _TimerScreenState extends State<TimerScreen> with TickerProviderStateMixin
     print("redraw");
 
     return AnimatedBuilder(
-                          animation: animationController,
-                          builder: (BuildContext context, Widget child) {
-                                if(finishedAllSteps()){
-                                  return Text("Done");
-                                }else{
-                                  if(timerFinished() && !onLastStep()){
-                                    current_step+=1;
-                                    restartTimer();
-                                  }
-                                    
-                                  return CurrentStepScreen(widget.recipe.steps[current_step], timerString);
+      animation: animationController,
+      builder: (BuildContext context, Widget child) {
+        if (finishedAllSteps()) {
+          return Text("Done");
+        } else {
+          if (timerFinished() && !onLastStep()) {
+            currentStep += 1;
+            restartTimer();
+          }
 
-                                }
-                          },
-                        );
+          return CurrentStepScreen(
+              widget.recipe.steps[currentStep], timerString);
+        }
+      },
+    );
   }
 }
 
 class CurrentStepScreen extends StatelessWidget {
-  RecipeStep step;
-  String timerString;
+  final RecipeStep step;
+  final String timerString;
 
   CurrentStepScreen(this.step, this.timerString);
 

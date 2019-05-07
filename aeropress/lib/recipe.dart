@@ -1,13 +1,13 @@
 class CoffeeRecipe{
   String name;
-  String brew_method;
-  int coffee_volume_grams;
-  String grind_size;
-  int water_volume_grams;
+  String brewMethod;
+  int coffeeVolumeGrams;
+  String grindSize;
+  int waterVolumeGrams;
   int temperature;
   List<RecipeStep> steps;
 
-  CoffeeRecipe(this.name, this.brew_method, this.coffee_volume_grams, this.grind_size, this.water_volume_grams, this.temperature, this.steps);
+  CoffeeRecipe(this.name, this.brewMethod, this.coffeeVolumeGrams, this.grindSize, this.waterVolumeGrams, this.temperature, this.steps);
 }
 
 class RecipeStep{
