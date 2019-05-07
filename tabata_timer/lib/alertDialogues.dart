@@ -30,6 +30,7 @@ class _PreparationAlertState extends State<PreparationAlert> {
           child: Slider(
         min: 0.0,
         max: 60.0,
+        divisions: 12,
         value: _prepTime.getTimeDouble(),
         onChanged: (double value) {
           setState(() => {
@@ -127,6 +128,7 @@ class _WorkAlertState extends State<WorkAlert> {
           child: Slider(
         min: 0.0,
         max: 180.0,
+        divisions: 36,
         value: _workTime.getTimeDouble(),
         onChanged: (double value) {
           setState(() => {
@@ -177,6 +179,7 @@ class _RestAlertState extends State<RestAlert> {
           child: Slider(
         min: 0.0,
         max: 60.0,
+        divisions: 12,
         value: _restTime.getTimeDouble(),
         onChanged: (double value) {
           setState(() => {
