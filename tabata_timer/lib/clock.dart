@@ -6,7 +6,6 @@ class Clock {
     Duration time = Duration(seconds: _second.toInt());
     int mins = time.inMinutes;
     int secs = time.inSeconds-(mins*60);
-    //return "$mins:$secs";
     String minText = "$mins".padLeft(2, "0");
     String secText = "$secs".padLeft(2, "0");
     return minText+":"+secText;

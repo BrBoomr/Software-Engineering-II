@@ -133,6 +133,7 @@ class _MainPageState extends State<MainPage> {
         child: Text("Start"),
         color: Colors.green,
         padding: const EdgeInsets.all(30),
+        
       ),
     ];
   }
@@ -142,8 +143,8 @@ class _MainPageState extends State<MainPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: new Text("Workout Detail"),
-          content: new Text("List of Contents"),
+          title: new Text("Upgrade Today!"),
+          content: new Text("\$5 One Time Fee"),
           actions: <Widget>[
             new FlatButton(
               child: new Text("Close"),

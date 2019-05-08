@@ -12,8 +12,10 @@ class _AddWorkoutState extends State<AddWorkout> {
       appBar: AppBar(
         title: Text("New Workout")
       ),
-      body: Container(
-        child: Text("AddWorkout"),
+      body: Center(
+        child: Container(
+          alignment: Alignment.center,
+          child: Text("Pro Feature!", style: TextStyle(fontSize: 50),)),
       ),);
   }
 }

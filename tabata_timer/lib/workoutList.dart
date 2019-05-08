@@ -12,8 +12,10 @@ class _WorkoutListState extends State<WorkoutList> {
       appBar: AppBar(
         title: Text("Workout List")
       ),
-      body: Container(
-        child: Text("WorkoutList"),
+      body: Center(
+        child: Container(
+          alignment: Alignment.center,
+          child: Text("Pro Feature!", style: TextStyle(fontSize: 50),)),
       ),);
   }
 }

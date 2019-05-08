@@ -216,15 +216,6 @@ class _PostState extends State<Post> {
   }
 }
 
-<<<<<<< HEAD
-
-
-class NewPost extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      
-=======
 class NewPost extends StatefulWidget {
   final token;
   NewPost(this.token);
@@ -304,7 +295,6 @@ class _NewPostState extends State<NewPost> {
             ],)
       ),
       ],
->>>>>>> e1f86e09f65592bca9953dab35f9d755b91e5577
     );
   }
 }

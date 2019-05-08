@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
 
 class TimerPage extends StatefulWidget {
   final Map<String, int> valueSet;
@@ -15,6 +14,7 @@ class _TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
   _TimerPageState(this.valueSet);
 
   AnimationController animationController;
+
   int currentStep = 0;
   int currentRound = 0;
   List<CurrentTimer> timerList = <CurrentTimer>[];
@@ -34,8 +34,7 @@ class _TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
     currentStep = 0;
     totalRounds = valueSet['_numRounds'];
     timerList.add(CurrentTimer("Prep", valueSet["_prepTime"]));
-    for(int x=1; x<totalRounds; x++){
-      //timerList.add(x%2 ==0 ? CurrentTimer("Rest", valueSet["_restTime"]) : CurrentTimer("Work", valueSet["_workTime"]));
+    for (int x = 1; x < totalRounds; x++) {
       timerList.add(CurrentTimer("Work", valueSet["_workTime"]));
       timerList.add(CurrentTimer("Rest", valueSet["_restTime"]));
     }
@@ -45,14 +44,11 @@ class _TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
     print("Total Steps: $totalSteps");
     print("Total Rounds: $totalRounds");
     animationController = AnimationController(
-        vsync: this, 
-        duration: Duration(seconds: timerList[currentStep].time));
+        vsync: this, duration: Duration(seconds: timerList[currentStep].time));
     animationController.reverse(
         from:
             animationController.value == 0.0 ? 1.0 : animationController.value);
   }
-
-  
 
   bool timerFinished() {
     return animationController.value == 0;
@@ -67,10 +63,11 @@ class _TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
   }
 
   void restartTimer() {
-    if(currentStep%2==1){
+    if (currentStep % 2 == 1) {
       currentRound++;
     }
-    animationController.duration = Duration(seconds: timerList[currentStep].time);
+    animationController.duration =
+        Duration(seconds: timerList[currentStep].time);
     animationController.reverse(
         from:
             animationController.value == 0.0 ? 1.0 : animationController.value);
@@ -80,32 +77,33 @@ class _TimerPageState extends State<TimerPage> with TickerProviderStateMixin {
     return new Scaffold(
         appBar: AppBar(centerTitle: true, title: Text("Timer")),
         body: AnimatedBuilder(
-          animation: animationController,
-          builder: (BuildContext context, Widget child) {
-            if (finishedAllSteps()) {
-              return Text("Complete!");
-            } 
-            else {
+            animation: animationController,
+            builder: (BuildContext context, Widget child) {
+              if (finishedAllSteps()){
+                animationController.dispose();
+              }
               if (timerFinished() && !onLastRound()) {
                 currentStep += 1;
                 restartTimer();
               }
               return Center(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(timerList[currentStep].title,
-                      style: TextStyle(fontSize: 80)),
-                    Text(timeText(int.parse(timerString)),
-                      style: TextStyle(fontSize: 130)),
-                    Text("$currentRound / ${valueSet['_numRounds']}",
-                      style: TextStyle(fontSize: 65)),
-
-                ]),
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(timerList[currentStep].title,
+                          style: TextStyle(color: timerList[currentStep].title == "Work" ? Colors.red[400] : Colors.blue, 
+                          fontSize: 80,)),
+                      Text(timeText(int.parse(timerString)),
+                          style: TextStyle(fontSize: 130)),
+                      Text("$currentRound / ${valueSet['_numRounds']}",
+                          style: TextStyle(fontSize: 65)),
+                      Text(
+                        finishedAllSteps() ? "Complete!" : " ",
+                        style: TextStyle(color: Colors.green, fontSize: 40),
+                      ),
+                    ]),
               );
-            }
-          },
-        ));
+            }));
   }
 }
 
